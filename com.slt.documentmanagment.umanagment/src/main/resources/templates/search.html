@@ -43,11 +43,11 @@
                 </thead>
                 <tbody>
                 <tr th:each="user, iStat : ${paginatedUser}">
-                    <td scope="row">1</td>
+                    <td th:text="${user.id}" scope="row"></td>
                     <td th:text="${user.userName}" />
                     <td th:text="${user.email}" />
                     <td><button type="button" class="btn btn-secondary btn-sm pb-0 pt-0 mt-0 mb-0"><i class="fas fa-eye"></i> view </button>
-                        <button type="button" class="btn btn-secondary btn-sm pb-0 pt-0 mt-0 mb-0"><i class="fas fa-edit"></i> edit </button></td>
+                        <a th:href="@{/edit/{id}(id=${user.id})}"  type="button" class="btn btn-secondary btn-sm pb-0 pt-0 mt-0 mb-0"><i class="fas fa-edit"></i> edit </a></td>
                 </tr>
                 </tbody>
             </table>

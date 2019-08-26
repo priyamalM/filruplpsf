@@ -1,8 +1,11 @@
 package com.slt.documentmanagment.controllers;
 
+import com.slt.documentmanagment.PageWrapper;
 import com.slt.documentmanagment.PageableUserDto;
 import com.slt.documentmanagment.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpMethod;
@@ -15,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -41,6 +45,7 @@ public class DashboardController {
         model.addAttribute("pageSize",body.getTotalPages().size());
         return "search";
     }
+
 
     @ModelAttribute("userob")
     private UserDto userDto(){
