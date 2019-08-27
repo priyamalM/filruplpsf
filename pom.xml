@@ -8,6 +8,7 @@
 		<module>com.slt.documentmanagment.resourceserver</module>
         <module>com.slt.documentmanagment.testingsso</module>
         <module>com.slt.documentmanagment.umanagmentcore</module>
+        <module>com.slt.documentmanagment.authcore</module>
     </modules>
 	<parent>
 		<groupId>org.springframework.boot</groupId>

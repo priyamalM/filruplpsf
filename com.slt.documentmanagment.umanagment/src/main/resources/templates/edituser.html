@@ -39,9 +39,9 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-md-3">
-                                    <div class="form-check" th:each="role: ${userob.roles}">
-                                        <input class="form-check-input" type="checkbox" th:field="*{roles}" th:value="${role}" checked="false">
-                                        <label class="form-check-label" th:for="${#ids.prev('roles')}" th:text="${role}">
+                                    <div class="form-check" th:each="role: ${AllRoles}">
+                                        <input class="form-check-input" type="checkbox" th:field="*{roles}" th:value="${role.name}">
+                                        <label class="form-check-label" th:for="${#ids.prev('roles')}" th:text="${role.name}">
                                         </label>
                                     </div>
                                 </div>

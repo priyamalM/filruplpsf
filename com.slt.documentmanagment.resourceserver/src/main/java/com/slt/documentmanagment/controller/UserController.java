@@ -32,7 +32,7 @@ public class UserController {
     UserService userService;
 
     @PreAuthorize("#oauth2.hasScope('read')")
-//    @RolesAllowed("ROLE_admin")
+//  @RolesAllowed("ROLE_admin")
     @RequestMapping(method = RequestMethod.GET, value = "/users/extra")
     @ResponseBody
     public Map<String, Object> getExtraInfo(Authentication auth) {
@@ -69,20 +69,6 @@ public class UserController {
         pageableUserDto.setUserDtoList(userDtoList);
         return pageableUserDto;
     }
-
-    @PreAuthorize("#oauth2.hasScope('read')")
-    @ResponseBody
-    @RequestMapping(value = "/userlist",method = RequestMethod.GET)
-    public Page<User> getUsers(Pageable pageable){
-        Page<User> allUsers = userService.findAllUsers(pageable);
-//        List<UserDto> collect = allUsers.stream().map(user -> {
-//            UserDto userDtoFromUser = userService.getUserDtoFromUser(user);
-//            return userDtoFromUser;
-//        }).collect(Collectors.toList());
-        //Page<UserDto> userDtoPage = new PageImpl<UserDto>(collect);
-        return allUsers;
-    }
-
 
     @PostMapping("/user")
     @ResponseBody

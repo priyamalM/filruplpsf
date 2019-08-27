@@ -1,11 +1,10 @@
 package com.slt.documentmanagment.controllers;
 
-import com.slt.documentmanagment.PageWrapper;
 import com.slt.documentmanagment.PageableUserDto;
+import com.slt.documentmanagment.RoleDto;
 import com.slt.documentmanagment.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpMethod;
@@ -50,9 +49,17 @@ public class DashboardController {
     @ModelAttribute("userob")
     private UserDto userDto(){
         UserDto userDto = new UserDto();
-        String []roles = {"admin","user","super admin"};
-        userDto.setRoles(roles);
         return userDto;
+    }
+
+    @ModelAttribute("AllRoles")
+    public List<RoleDto> getAllRoles(){
+        ResponseEntity<List<RoleDto>> rolesList = restTemplate.exchange("http://localhost:8082/spring-security-oauth-resource/roles"
+                , HttpMethod.GET
+                , null
+                , new ParameterizedTypeReference<List<RoleDto>>() {
+                });
+        return rolesList.getBody();
     }
 
 }

@@ -1,7 +1,9 @@
 package com.slt.documentmanagment.controllers;
 
+import com.slt.documentmanagment.RoleDto;
 import com.slt.documentmanagment.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -9,6 +11,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
+
+import java.util.List;
 
 @Controller
 public class UserController {
@@ -50,6 +54,15 @@ public class UserController {
         return "redirect:/search";
     }
 
+    @ModelAttribute("AllRoles")
+    public List<RoleDto> getAllRoles(){
+        ResponseEntity<List<RoleDto>> rolesList = restTemplate.exchange("http://localhost:8082/spring-security-oauth-resource/roles"
+                , HttpMethod.GET
+                , null
+                , new ParameterizedTypeReference<List<RoleDto>>() {
+                });
+        return rolesList.getBody();
+    }
 
 
 }

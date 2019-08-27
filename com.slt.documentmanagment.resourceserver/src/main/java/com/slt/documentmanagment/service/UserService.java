@@ -6,8 +6,6 @@ import com.slt.documentmanagment.repository.UserDetailRepository;
 import com.slt.documentmanagment.UserDto;
 import com.slt.documentmanagment.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -28,12 +26,7 @@ public class UserService {
     public UserDto saveUser(UserDto userDto){
         User user = getUserFromUserDto(userDto);
         User savedUser = userDetailRepository.save(user);
-        return getUserDtoFromUser(savedUser);
-    }
-
-    public Page<User> findAllUsers(Pageable pageable){
-        Page<User> all = userDetailRepository.findAll(pageable);
-        return all;
+        return  getUserDtoFromUser(savedUser);
     }
 
     public UserDto getUser(int userID){
@@ -63,7 +56,7 @@ public class UserService {
 
     public User getUserFromUserDto(UserDto userDto){
         User user = new User();
-        if (userDto.getId()!=0){
+        if (userDto.getId()!=null){
             user.setId(userDto.getId());
         }
         user.setAccountNonExpired(userDto.isAccountNonExpired());
