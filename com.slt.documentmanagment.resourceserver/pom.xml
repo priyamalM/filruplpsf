@@ -50,6 +50,11 @@
             <artifactId>com.slt.documentmanagment.umanagmentcore</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>com.slt.documentmanagment</groupId>
+            <artifactId>com.slt.documentmanagment.authcrud</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 
     <build>

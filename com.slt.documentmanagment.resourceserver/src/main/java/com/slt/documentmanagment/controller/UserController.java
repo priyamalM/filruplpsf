@@ -38,7 +38,7 @@ public class UserController {
     public Map<String, Object> getExtraInfo(Authentication auth) {
         OAuth2AuthenticationDetails oauthDetails = (OAuth2AuthenticationDetails) auth.getDetails();
         Map<String, Object> details = (Map<String, Object>) oauthDetails.getDecodedDetails();
-        System.out.println("User organization is " + details.get("organization"));
+        //System.out.println("User organization is " + details.get("organization"));
         return details;
     }
 

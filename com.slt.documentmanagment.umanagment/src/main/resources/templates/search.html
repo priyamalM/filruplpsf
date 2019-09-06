@@ -71,19 +71,23 @@
                 </div>
                     <div class="modal-body">
                         <form method="post" th:action="@{/create/user}" th:object="${userob}">
+                            <label th:for="*{userName}">User name</label>
                             <div class="input-group input-group-sm mb-3">
                                     <input th:field="*{userName}" type="text" placeholder="user name" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
                             </div>
                             <div class="input-group-sm mb-3">
+                                <label th:for="*{email}">Email address</label>
                                 <input th:field="*{email}" type="email" class="form-control" placeholder="email address" aria-label="Recipient's email" aria-describedby="basic-addon2">
                             </div>
                             <div class="row">
                                 <div class="col-md-4">
+                                    <label th:for="*{firstName}">First name</label>
                                     <div class="input-group input-group-sm mb-3">
                                         <input th:field="*{firstName}" type="text" placeholder="first name" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
                                     </div>
                                 </div>
                                 <div class="col-md-4">
+                                    <label th:for="*{lastName}">Last name</label>
                                     <div class="input-group input-group-sm mb-3">
                                         <input th:field="*{lastName}" type="text" placeholder="last name" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
                                     </div>
@@ -118,7 +122,6 @@
                             </div>
                         </form>
                     </div>
-
             </div>
         </div>
     </div>
