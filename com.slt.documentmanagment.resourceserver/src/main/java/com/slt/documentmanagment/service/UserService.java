@@ -21,9 +21,16 @@ public class UserService {
     private UserDetailRepository userDetailRepository;
     @Autowired
     private RoleRepository roleRepository;
+    @Autowired
+    private EmailServiceImpl emailService;
+
     private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     public UserDto saveUser(UserDto userDto){
+        if(userDetailRepository.findByUsername(userDto.getUserName()).isPresent()){
+            return null;
+        }
+        emailService.sendMessage(userDto.getEmail(),"password : ",userDto.getPassword());
         User user = getUserFromUserDto(userDto);
         User savedUser = userDetailRepository.save(user);
         return  getUserDtoFromUser(savedUser);
