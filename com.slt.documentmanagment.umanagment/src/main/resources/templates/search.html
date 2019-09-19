@@ -1,4 +1,5 @@
-<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css"
+      xmlns="http://www.w3.org/1999/html">
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <!------ Include the above in your HEAD tag ---------->
@@ -51,12 +52,24 @@
                 </tr>
                 </tbody>
             </table>
-            <div th:if="${pageSize > 0}" class="pagination"
-                 th:each="pageNumber : ${pageNumbers}">
-                <a th:href="@{/search(size=${paginatedUser.size}, page=${pageNumber})}"
-                   th:text=${pageNumber}
-                   th:class="${pageNumber==paginatedUser.number + 1} ? active"></a>
-            </div>
+<!--            <div th:if="${pageSize > 0}" class="pagination"-->
+<!--                 th:each="pageNumber : ${pageNumbers}">-->
+<!--                <a th:href="@{/search(size=${paginatedUser.size}, page=${pageNumber})}"-->
+<!--                   th:text=${pageNumber}-->
+<!--                   th:class="${pageNumber==paginatedUser.number + 1} ? active"></a>-->
+<!--            </div>-->
+            <nav aria-label="Page navigation example">
+                <ul class="pagination">
+<!--               <li th class="page-item"><a class="page-link" href="#">2</a></li>-->
+                    <li class="page-item" th:if="${pageSize > 0}" th:each="pageNumber : ${pageNumbers}">
+                    <a class="page-link"
+                       th:href="@{/search(size=${paginatedUser.size}, page=${pageNumber})}"
+                       th:text=${pageNumber}
+                       th:classappend="${pageNumber==paginatedUser.number + 1} ? active">
+                    </a>
+                    </li>
+                </ul>
+            </nav>
         </div>
     </main>
     <!-- Modal -->
@@ -120,12 +133,22 @@
                                 <button type="submit" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
                                 <button type="submit" class="btn btn-primary btn-sm">Save changes</button>
                             </div>
+                            <span th:text="${userstatus}"></span>
+                            <span th:text="${emailStatus}"></span>
                         </form>
                     </div>
             </div>
         </div>
     </div>
 </div>
+
+<th:block th:if="${formErrors}">
+    <script th:inline="javascript">
+    $(document).ready(function() {
+        $('#exampleModal').modal();
+    });
+    </script>
+</th:block>
 
 <!-- page-wrapper -->
 <div th:replace="fragments/footer :: footer" th:remove="tag"></div>

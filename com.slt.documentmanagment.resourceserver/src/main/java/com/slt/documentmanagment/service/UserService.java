@@ -1,5 +1,6 @@
 package com.slt.documentmanagment.service;
 
+import com.slt.documentmanagment.exceptions.EmailSendException;
 import com.slt.documentmanagment.model.Role;
 import com.slt.documentmanagment.repository.RoleRepository;
 import com.slt.documentmanagment.repository.UserDetailRepository;
@@ -26,11 +27,18 @@ public class UserService {
 
     private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-    public UserDto saveUser(UserDto userDto){
+    public UserDto saveUser(UserDto userDto) throws EmailSendException {
         if(userDetailRepository.findByUsername(userDto.getUserName()).isPresent()){
             return null;
         }
-        emailService.sendMessage(userDto.getEmail(),"password : ",userDto.getPassword());
+        boolean sendSuccess = emailService.sendMessage(userDto.getEmail(), "password : ", userDto.getPassword());
+        if (!sendSuccess){ throw new EmailSendException("Email Sending Failed."); }
+        User user = getUserFromUserDto(userDto);
+        User savedUser = userDetailRepository.save(user);
+        return  getUserDtoFromUser(savedUser);
+    }
+
+    public UserDto editUser(UserDto userDto){
         User user = getUserFromUserDto(userDto);
         User savedUser = userDetailRepository.save(user);
         return  getUserDtoFromUser(savedUser);
@@ -47,6 +55,8 @@ public class UserService {
         userDto.setId(user.getId());
         userDto.setIdcol(user.getId()+"");
         userDto.setUserName(user.getUsername());
+        userDto.setFirstName(user.getFirstName());
+        userDto.setLastName(user.getLastName());
         userDto.setEmail(user.getEmail());
         userDto.setAccountNonExpired(user.isAccountNonExpired());
         userDto.setAccountNonLocked(user.isAccountNonLocked());
@@ -78,6 +88,8 @@ public class UserService {
         });
         user.setPassword(passwordEncoder.encode(userDto.getPassword()));
         user.setUsername(userDto.getUserName());
+        user.setFirstName(userDto.getFirstName());
+        user.setLastName(userDto.getLastName());
         return user;
     }
 

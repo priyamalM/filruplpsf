@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,7 +29,18 @@ public class UserController {
                 , HttpMethod.POST
                 , userDtoHttpEntity
                 , UserDto.class);
-        UserDto savedUser = exchange.getBody();
+        if (exchange.getStatusCode()== HttpStatus.ALREADY_REPORTED){
+            model.addAttribute("formErrors",true);
+            model.addAttribute("userstatus","Already Existing User");
+            return "search";
+        }else if (exchange.getStatusCode()==HttpStatus.BAD_REQUEST){
+            model.addAttribute("formErrors",true);
+            model.addAttribute("emailStatus","Email Verification Sending Failed");
+            return "search";
+        }
+        else if (exchange.getStatusCode()==HttpStatus.ACCEPTED){
+            return "redirect:/search";
+        }
         return "redirect:/search";
     }
 

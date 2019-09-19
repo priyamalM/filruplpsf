@@ -2,6 +2,7 @@ package com.slt.documentmanagment.controller;
 
 import com.slt.documentmanagment.PageableUserDto;
 import com.slt.documentmanagment.UserDto;
+import com.slt.documentmanagment.exceptions.EmailSendException;
 import com.slt.documentmanagment.model.User;
 import com.slt.documentmanagment.repository.UserDetailRepository;
 import com.slt.documentmanagment.service.UserService;
@@ -9,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationDetails;
@@ -73,8 +76,17 @@ public class UserController {
     @PostMapping("/user")
     @ResponseBody
     @RolesAllowed("ROLE_admin")
-    public UserDto saveUser(@RequestBody UserDto userDto){
-        return userService.saveUser(userDto);
+    public ResponseEntity<UserDto> saveUser(@RequestBody UserDto userDto){
+        UserDto savedUser = null;
+        try {
+            savedUser = userService.saveUser(userDto);
+        } catch (EmailSendException e) {
+            return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
+        }
+        if(savedUser==null){
+         return new ResponseEntity<>(null, HttpStatus.ALREADY_REPORTED);
+        }
+        return new ResponseEntity<>(savedUser,HttpStatus.CREATED);
     }
 
 
@@ -90,7 +102,7 @@ public class UserController {
     @ResponseBody
     @RolesAllowed("ROLE_admin")
     public UserDto saveEditedUser(@PathVariable("id") int id,@RequestBody UserDto userDto){
-        UserDto editedUser = userService.saveUser(userDto);
+        UserDto editedUser = userService.editUser(userDto);
         return editedUser;
     }
 

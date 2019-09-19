@@ -23,18 +23,23 @@ public class User implements Serializable {
         this.credentialsNonExpired = user.isCredentialsNonExpired();
         this.accountNonLocked = user.isAccountNonLocked();
         this.roles = user.getRoles();
+        this.firstName = user.getFirstName();
+        this.lastName = user.getLastName();
     }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
     @Column(name = "username")
     private String username;
     @Column(name = "password")
     private String password;
     @Column(name = "email")
     private String email;
+    @Column(name = "firstName")
+    private String firstName;
+    @Column(name = "lastName")
+    private String lastName;
     @Column(name = "enabled")
     private boolean enabled;
     @Column(name = "accountNonExpired")
@@ -43,7 +48,6 @@ public class User implements Serializable {
     private boolean credentialsNonExpired;
     @Column(name = "accountNonLocked")
     private boolean accountNonLocked;
-
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "role_user", joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
