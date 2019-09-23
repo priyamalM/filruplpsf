@@ -27,7 +27,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     @Bean
     public AuthenticationManager authenticationManagerBean() throws Exception {
-        System.out.println("encoded pass -" + passwordEncoder.encode("secret"));
         return super.authenticationManagerBean();
     }
 

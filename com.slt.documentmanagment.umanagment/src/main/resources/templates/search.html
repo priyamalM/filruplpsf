@@ -1,5 +1,6 @@
 <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css"
-      xmlns="http://www.w3.org/1999/html">
+      xmlns="http://www.w3.org/1999/html"
+      xmlns:th="http://www.thymeleaf.org">
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <!------ Include the above in your HEAD tag ---------->
@@ -125,9 +126,9 @@
                             </div>
                             <div class="input-group input-group-sm mb-3">
                                 <div class="input-group-prepend">
-                                    <span class="input-group-text" id="inputGroup-sizing-sm">generate</span>
+                                    <span style="cursor: context-menu" class="input-group-text" id="inputGroup-sizing-sm gen" onclick="genPass()">generate</span>
                                 </div>
-                                <input th:field="*{password}" type="text" class="form-control" placeholder="password" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                                <input th:field="*{password}" type="text" class="form-control pass" placeholder="password" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
                             </div>
                             <div class="modal-footer">
                                 <button type="submit" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
@@ -149,6 +150,14 @@
     });
     </script>
 </th:block>
+
+<script>
+    function genPass(){
+    var randomstring = Math.random().toString(36).slice(-8);
+    var firstDiv = document.querySelector('.pass');
+    document.querySelector('.pass').value=randomstring;
+    }
+</script>
 
 <!-- page-wrapper -->
 <div th:replace="fragments/footer :: footer" th:remove="tag"></div>

@@ -34,7 +34,8 @@ public class OAuth2AuthorizationServerConfigJwt extends AuthorizationServerConfi
 
     @Override
     public void configure(final AuthorizationServerSecurityConfigurer oauthServer) throws Exception {
-        oauthServer.tokenKeyAccess("permitAll()").checkTokenAccess("isAuthenticated()");
+        //oauthServer.tokenKeyAccess("permitAll()").checkTokenAccess("isAuthenticated()");
+        oauthServer.tokenKeyAccess("permitAll()").checkTokenAccess("permitAll()");
     }
 
     @Override

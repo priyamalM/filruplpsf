@@ -6,7 +6,7 @@ spring:
           custom:
             client-id: barClientIdPassword
             client-secret: secret
-            scope: read,write,bar
+            scope: read,write,foo
             authorization-grant-type: authorization_code
             redirect-uri: http://localhost:8087/ui-thymeleaf/login/oauth2/code/custom
         provider:
