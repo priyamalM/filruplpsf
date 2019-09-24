@@ -21,7 +21,6 @@ public class EmailServiceImpl{
         try {
             javaMailSender.send(message);
         }catch (MailException me){
-            System.out.println("send exception");
             return false;
         }
         return true;

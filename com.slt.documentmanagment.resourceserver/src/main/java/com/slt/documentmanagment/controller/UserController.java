@@ -5,6 +5,7 @@ import com.slt.documentmanagment.UserDto;
 import com.slt.documentmanagment.exceptions.EmailSendException;
 import com.slt.documentmanagment.model.User;
 import com.slt.documentmanagment.repository.UserDetailRepository;
+import com.slt.documentmanagment.service.EmailServiceImpl;
 import com.slt.documentmanagment.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -29,10 +30,13 @@ import java.util.stream.IntStream;
 public class UserController {
 
     @Autowired
-    UserDetailRepository userDetailRepository;
+    private UserDetailRepository userDetailRepository;
 
     @Autowired
-    UserService userService;
+    private UserService userService;
+
+    @Autowired
+    private EmailServiceImpl emailService;
 
     @PreAuthorize("#oauth2.hasScope('read')")
 //  @RolesAllowed("ROLE_admin")
@@ -102,7 +106,7 @@ public class UserController {
     @ResponseBody
     @RolesAllowed("ROLE_admin")
     public UserDto saveEditedUser(@PathVariable("id") int id,@RequestBody UserDto userDto){
-        UserDto editedUser = userService.editUser(userDto);
+        UserDto editedUser = userService.editUser(userDto,userDto.isPasswordChanged());
         return editedUser;
     }
 

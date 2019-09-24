@@ -38,7 +38,17 @@ public class UserService {
         return  getUserDtoFromUser(savedUser);
     }
 
-    public UserDto editUser(UserDto userDto){
+    public UserDto editUser(UserDto userDto,boolean passwordChanged){
+        if (passwordChanged){
+            emailService.sendMessage(userDto.getEmail(),"password Changed : ",userDto.getPassword());
+        }else{
+            Optional<User> byId = userDetailRepository.findById(userDto.getId());
+            if (byId.isPresent()){
+                User existingUser = byId.get();
+                String password = existingUser.getPassword();
+                userDto.setPassword(password);
+            }
+        }
         User user = getUserFromUserDto(userDto);
         User savedUser = userDetailRepository.save(user);
         return  getUserDtoFromUser(savedUser);
@@ -86,7 +96,9 @@ public class UserService {
             Role byName = roleRepository.findByName(role);
             if (byName!=null)user.getRoles().add(byName);
         });
-        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        if (userDto.getPassword()!=null){
+            user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        }
         user.setUsername(userDto.getUserName());
         user.setFirstName(userDto.getFirstName());
         user.setLastName(userDto.getLastName());

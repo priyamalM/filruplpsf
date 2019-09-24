@@ -25,6 +25,6 @@ public class UserDto implements Serializable {
     private boolean credentialsNonExpired = true;
     private boolean accountNonLocked = true;
     private String []roles;
-
+    private boolean passwordChanged = false;
 
 }
