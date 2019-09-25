@@ -48,8 +48,10 @@
                     <td th:text="${user.id}" scope="row"></td>
                     <td th:text="${user.userName}" />
                     <td th:text="${user.email}" />
-                    <td><button type="button" class="btn btn-secondary btn-sm pb-0 pt-0 mt-0 mb-0"><i class="fas fa-eye"></i> view </button>
-                        <a th:href="@{/edit/{id}(id=${user.id})}"  type="button" class="btn btn-secondary btn-sm pb-0 pt-0 mt-0 mb-0"><i class="fas fa-edit"></i> edit </a></td>
+                    <td>
+                        <a th:href="@{/view/{id}(id=${user.id})}" type="button" class="btn btn-secondary btn-sm pb-0 pt-0 mt-0 mb-0"><i class="fas fa-eye"></i> view </a>
+                        <a th:href="@{/edit/{id}(id=${user.id})}"  type="button" class="btn btn-secondary btn-sm pb-0 pt-0 mt-0 mb-0"><i class="fas fa-edit"></i> edit </a>
+                    </td>
                 </tr>
                 </tbody>
             </table>

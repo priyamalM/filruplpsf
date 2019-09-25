@@ -52,6 +52,14 @@ public class UserController {
         return "edituser";
     }
 
+    @GetMapping(value ="/view/{id}")
+    public String viewUser(@PathVariable("id") int userId,Model model){
+        ResponseEntity<UserDto> userDtoResponseEntity = restTemplate.getForEntity("http://localhost:8082/spring-security-oauth-resource/user/{id}", UserDto.class, userId);
+        if (userDtoResponseEntity.getBody()==null) return "error";
+        model.addAttribute("userob",userDtoResponseEntity.getBody());
+        return "view";
+    }
+
     @PostMapping(value = "edit/user/{id}")
     public String saveEditedUser(@PathVariable("id") int id, @ModelAttribute("userob") UserDto userDto){
         userDto.setId(id);
