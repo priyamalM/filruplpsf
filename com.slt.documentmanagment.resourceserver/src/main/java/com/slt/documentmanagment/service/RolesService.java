@@ -23,17 +23,29 @@ public class RolesService {
         return roleDtos;
     }
 
+    public Role saveRole(RoleDto roleDto){
+        Role roleByName = roleRepository.findByName(roleDto.getName());
+        if (roleByName==null){
+            Role roleFromRoleDto = getRoleFromRoleDto(roleDto);
+            Role savedRole = roleRepository.save(roleFromRoleDto);
+            return savedRole;
+        }
+        return null;
+    }
+
     public Role getRoleFromRoleDto(RoleDto roleDto){
         Role role = new Role();
         role.setId(roleDto.getId());
         role.setName(roleDto.getName());
-        List<Permission> permissionList = roleDto.getPermissions().stream().map(permissionDto -> {
-            Permission permission = new Permission();
-            permission.setId(permissionDto.getId());
-            permission.setName(permissionDto.getName());
-            return permission;
-        }).collect(Collectors.toList());
-        role.setPermissions(permissionList);
+        if (roleDto.getPermissions()!=null) {
+            List<Permission> permissionList = roleDto.getPermissions().stream().map(permissionDto -> {
+                Permission permission = new Permission();
+                permission.setId(permissionDto.getId());
+                permission.setName(permissionDto.getName());
+                return permission;
+            }).collect(Collectors.toList());
+            role.setPermissions(permissionList);
+        }
         return role;
     }
 

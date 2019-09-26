@@ -1,11 +1,12 @@
 package com.slt.documentmanagment.controller;
 
 import com.slt.documentmanagment.RoleDto;
+import com.slt.documentmanagment.model.Role;
 import com.slt.documentmanagment.service.RolesService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -20,6 +21,13 @@ public class RolesController {
     public List<RoleDto> getRoles(){
         List<RoleDto> allRoles = rolesService.findAllRoles();
         return allRoles;
+    }
+
+    @PostMapping
+    public ResponseEntity<Role> saveRole(@RequestBody RoleDto roleDto){
+        Role role = rolesService.saveRole(roleDto);
+        if (role!=null) return new ResponseEntity<Role>(role, HttpStatus.ACCEPTED);
+        return new ResponseEntity<Role>(role,HttpStatus.ALREADY_REPORTED);
     }
 
 }
