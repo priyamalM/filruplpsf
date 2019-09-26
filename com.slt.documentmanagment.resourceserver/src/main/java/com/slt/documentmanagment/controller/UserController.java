@@ -77,6 +77,37 @@ public class UserController {
         return pageableUserDto;
     }
 
+    //@PreAuthorize("#oauth2.hasScope('read')")
+    @ResponseBody
+    @RequestMapping(method = RequestMethod.GET,value = "/usersByName")
+    public PageableUserDto getUsersByName(@RequestParam("page") Optional<Integer> page
+            ,@RequestParam("size") Optional<Integer> size
+            ,@RequestParam("name") Optional<String> name
+                                          ){
+        int currentPage = page.orElse(1);
+        int pageSize = size.orElse(5);
+        String namePiece = name.orElse("");
+
+        PageRequest pageRequest = PageRequest.of(currentPage - 1, pageSize);
+        Page<User> paginatedUser = userDetailRepository.findByUsernameContaining(namePiece,pageRequest);
+
+        PageableUserDto pageableUserDto = new PageableUserDto();
+        int totalPages = paginatedUser.getTotalPages();
+        if (totalPages > 0) {
+            List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages)
+                    .boxed()
+                    .collect(Collectors.toList());
+            pageableUserDto.setTotalPages(pageNumbers);
+        }
+
+        List<UserDto> userDtoList = paginatedUser.stream().map(user -> {
+            UserDto userDtoFromUser = userService.getUserDtoFromUser(user);
+            return userDtoFromUser;
+        }).collect(Collectors.toList());
+        pageableUserDto.setUserDtoList(userDtoList);
+        return pageableUserDto;
+    }
+
     @PostMapping("/user")
     @ResponseBody
     @RolesAllowed("ROLE_admin")

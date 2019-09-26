@@ -45,6 +45,44 @@ public class DashboardController {
         return "search";
     }
 
+    @RequestMapping(value = "/searchby",method = RequestMethod.GET)
+    public String searchByName(@RequestParam("name") String name
+            ,@ModelAttribute("userob") UserDto userDto
+            ,Model model
+            ,@RequestParam("page") Optional<Integer> page
+            ,@RequestParam("size") Optional<Integer> size){
+        int currentPage = page.orElse(1);
+        int pageSize = size.orElse(1);
+        if (name==null || name.isEmpty()){
+            ResponseEntity<PageableUserDto> getEntity = restTemplate.exchange("http://localhost:8082/spring-security-oauth-resource/users?page="+currentPage+"&size="+pageSize
+                    , HttpMethod.GET
+                    , null
+                    , PageableUserDto.class);
+            PageableUserDto body = getEntity.getBody();
+            PageImpl<UserDto> userDtos = new PageImpl<>(body.getUserDtoList(), PageRequest.of(currentPage,pageSize), body.getTotalPages().size());
+            model.addAttribute("paginatedUser",userDtos);
+            model.addAttribute("pageNumbers", body.getTotalPages());
+            model.addAttribute("pageSize",body.getTotalPages().size());
+        }else{
+            ResponseEntity<PageableUserDto> getEntity = restTemplate.exchange("http://localhost:8082/spring-security-oauth-resource/usersByName?name="+name+"&page="+currentPage+"&size="+pageSize
+                    , HttpMethod.GET
+                    , null
+                    , PageableUserDto.class);
+            PageableUserDto body = getEntity.getBody();
+            int totalPageSize = 0;
+            if (body.getTotalPages()==null){
+                totalPageSize = 0;
+            }else{
+                totalPageSize = body.getTotalPages().size();
+            }
+            PageImpl<UserDto> userDtos = new PageImpl<>(body.getUserDtoList(), PageRequest.of(currentPage,pageSize), totalPageSize);
+            model.addAttribute("paginatedUser",userDtos);
+            model.addAttribute("pageNumbers", body.getTotalPages());
+            model.addAttribute("pageSize",totalPageSize);
+        }
+        return "search";
+    }
+
 
     @ModelAttribute("userob")
     private UserDto userDto(){
