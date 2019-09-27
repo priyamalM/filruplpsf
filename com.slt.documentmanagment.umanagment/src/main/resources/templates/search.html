@@ -19,8 +19,8 @@
             <table id="userlisttable" class="table table-sm table-hover table-striped w-100 compact stripe">
                 <thead>
                 <tr>
+                    <form th:action="@{/searchby}" method="get">
                     <th scope="row" class="border-0 pt-0 pr-0 pl-0 pb-2" colspan="2">
-                        <form th:action="@{/searchby}" method="get">
                         <div class="input-group input-group-sm m-0 p-0">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon1"><i class="fas fa-search"></i></span>
