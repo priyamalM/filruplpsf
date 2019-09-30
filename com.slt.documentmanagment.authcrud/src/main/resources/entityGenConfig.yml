@@ -1,0 +1,17 @@
+#jdbcSettings:
+#  url: "jdbc:mysql://192.168.1.12:3306/sltDMS"
+#  username: "buddhika"
+#  password: "sltDMS"
+#  driverClassName: "com.mysql.jdbc.Driver"
+#
+#packageName: "com.slt.dmsmanagment.model.update"
+
+jdbcSettings:
+  url: "jdbc:mysql://localhost/oauth2"
+  username: "root"
+  password: "macWORLD!@#123"
+  driverClassName: "com.mysql.jdbc.Driver"
+
+packageName: "com.slt.documentmanagment.model.remove"
+
+#  mvn jpa-entity-generator:generateAll
