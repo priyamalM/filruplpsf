@@ -1,5 +1,6 @@
 package com.slt.documentmanagment.configuration;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.AuthorizationCodeGrantBuilder;
@@ -20,9 +21,8 @@ import java.util.Arrays;
 @EnableSwagger2
 public class SwaggerConfig {
 
-    String AUTH_SERVER = "http://localhost:8081/spring-security-oauth-server";
-    String CLIENT_SECRET = "secret";
-    String CLIENT_ID = "swaggerclient";
+    @Autowired
+    private OauthConfig oauthConfig;
 
     @Bean
     public Docket productApi() {
@@ -37,8 +37,8 @@ public class SwaggerConfig {
     @Bean
     public SecurityConfiguration security() {
         return SecurityConfigurationBuilder.builder()
-                .clientId(CLIENT_ID)
-                .clientSecret(CLIENT_SECRET)
+                .clientId(oauthConfig.getClientId())
+                .clientSecret(oauthConfig.getClientSecret())
                 .scopeSeparator("")
                 .useBasicAuthenticationWithAccessCodeGrant(true)
                 .build();
@@ -46,9 +46,9 @@ public class SwaggerConfig {
 
     private SecurityScheme securityScheme() {
         GrantType grantType = new AuthorizationCodeGrantBuilder()
-                .tokenEndpoint(new TokenEndpoint(AUTH_SERVER + "/oauth/token", "oauthtoken"))
+                .tokenEndpoint(new TokenEndpoint(oauthConfig.getOauthServer() + "/oauth/token", "oauthtoken"))
                 .tokenRequestEndpoint(
-                        new TokenRequestEndpoint(AUTH_SERVER + "/oauth/authorize", CLIENT_ID, CLIENT_SECRET))
+                        new TokenRequestEndpoint(oauthConfig.getOauthServer() + "/oauth/authorize", oauthConfig.getClientId(), oauthConfig.getClientSecret()))
                 .build();
 
         SecurityScheme oauth = new OAuthBuilder().name("spring_oauth")

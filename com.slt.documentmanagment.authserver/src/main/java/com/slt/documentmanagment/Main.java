@@ -14,8 +14,8 @@ import javax.sql.DataSource;
 @SpringBootApplication
 public class Main{
 
-    @Value("classpath:schema.sql")
-    private Resource schemaScript;
+    //@Value("classpath:schema.sql")
+    //private Resource schemaScript;
 
 
     public static void main(String[] args) {
@@ -26,14 +26,14 @@ public class Main{
     public DataSourceInitializer dataSourceInitializer(final DataSource dataSource) {
         final DataSourceInitializer initializer = new DataSourceInitializer();
         initializer.setDataSource(dataSource);
-        initializer.setDatabasePopulator(databasePopulator());
+        //initializer.setDatabasePopulator(databasePopulator());
         return initializer;
     }
 
-    private DatabasePopulator databasePopulator() {
-        final ResourceDatabasePopulator populator = new ResourceDatabasePopulator();
-        populator.addScript(schemaScript);
-        return populator;
-    }
+//    private DatabasePopulator databasePopulator() {
+//        final ResourceDatabasePopulator populator = new ResourceDatabasePopulator();
+//        populator.addScript(schemaScript);
+//        return populator;
+//    }
 
 }

@@ -2,6 +2,7 @@ package com.slt.documentmanagment.controllers;
 
 import com.slt.documentmanagment.RoleDto;
 import com.slt.documentmanagment.UserDto;
+import com.slt.documentmanagment.config.ResourceServerPropConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
@@ -16,16 +17,18 @@ import org.springframework.web.client.RestTemplate;
 import java.util.List;
 
 @Controller
-public class UserController {
+public class UserController extends AbstractController{
 
     @Autowired
-    RestTemplate restTemplate;
+    public UserController(RestTemplate restService, ResourceServerPropConfig resourceServerPropConfig) {
+        super(restService, resourceServerPropConfig);
+    }
 
     @RequestMapping(method = RequestMethod.POST, value = "/create/user")
     public String createUser(@ModelAttribute("userob") UserDto userDto, Model model) {
         HttpEntity<UserDto> userDtoHttpEntity = new HttpEntity<>(userDto);
-        ResponseEntity<UserDto> exchange = restTemplate.exchange(
-                "http://localhost:8082/spring-security-oauth-resource/user"
+        ResponseEntity<UserDto> exchange = restService.exchange(
+                BASERURI+"/user"
                 , HttpMethod.POST
                 , userDtoHttpEntity
                 , UserDto.class);
@@ -46,7 +49,7 @@ public class UserController {
 
     @GetMapping(value ="/edit/{id}")
     public String editUser(@PathVariable("id") int userId,Model model){
-        ResponseEntity<UserDto> userDtoResponseEntity = restTemplate.getForEntity("http://localhost:8082/spring-security-oauth-resource/user/{id}", UserDto.class, userId);
+        ResponseEntity<UserDto> userDtoResponseEntity = restService.getForEntity(BASERURI+"/user/{id}", UserDto.class, userId);
         if (userDtoResponseEntity.getBody()==null) return "error";
         model.addAttribute("userob",userDtoResponseEntity.getBody());
         return "edituser";
@@ -54,7 +57,7 @@ public class UserController {
 
     @GetMapping(value ="/view/{id}")
     public String viewUser(@PathVariable("id") int userId,Model model){
-        ResponseEntity<UserDto> userDtoResponseEntity = restTemplate.getForEntity("http://localhost:8082/spring-security-oauth-resource/user/{id}", UserDto.class, userId);
+        ResponseEntity<UserDto> userDtoResponseEntity = restService.getForEntity(BASERURI+"/user/{id}", UserDto.class, userId);
         if (userDtoResponseEntity.getBody()==null) return "error";
         model.addAttribute("userob",userDtoResponseEntity.getBody());
         return "view";
@@ -64,8 +67,8 @@ public class UserController {
     public String saveEditedUser(@PathVariable("id") int id, @ModelAttribute("userob") UserDto userDto){
         userDto.setId(id);
         HttpEntity<UserDto> userDtoHttpEntity = new HttpEntity<>(userDto);
-        ResponseEntity<UserDto> exchange = restTemplate.exchange(
-                "http://localhost:8082/spring-security-oauth-resource/user/edit/{id}"
+        ResponseEntity<UserDto> exchange = restService.exchange(
+                BASERURI+"/user/edit/{id}"
                 , HttpMethod.POST
                 , userDtoHttpEntity
                 , UserDto.class
@@ -76,7 +79,7 @@ public class UserController {
 
     @ModelAttribute("AllRoles")
     public List<RoleDto> getAllRoles(){
-        ResponseEntity<List<RoleDto>> rolesList = restTemplate.exchange("http://localhost:8082/spring-security-oauth-resource/roles"
+        ResponseEntity<List<RoleDto>> rolesList = restService.exchange(BASERURI+"/roles"
                 , HttpMethod.GET
                 , null
                 , new ParameterizedTypeReference<List<RoleDto>>() {

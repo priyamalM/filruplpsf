@@ -3,6 +3,7 @@ package com.slt.documentmanagment.controllers;
 import com.slt.documentmanagment.PageableUserDto;
 import com.slt.documentmanagment.RoleDto;
 import com.slt.documentmanagment.UserDto;
+import com.slt.documentmanagment.config.ResourceServerPropConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.data.domain.PageImpl;
@@ -21,10 +22,12 @@ import java.util.List;
 import java.util.Optional;
 
 @Controller
-public class DashboardController {
+public class DashboardController extends AbstractController{
 
     @Autowired
-    RestTemplate restTemplate;
+    public DashboardController(RestTemplate restService, ResourceServerPropConfig resourceServerPropConfig) {
+        super(restService, resourceServerPropConfig);
+    }
 
     @RequestMapping(value = "/search",method = RequestMethod.GET)
     public String createUserController(@ModelAttribute("userob") UserDto userDto
@@ -32,8 +35,8 @@ public class DashboardController {
             ,@RequestParam("page") Optional<Integer> page
             ,@RequestParam("size") Optional<Integer> size){
         int currentPage = page.orElse(1);
-        int pageSize = size.orElse(1);
-        ResponseEntity<PageableUserDto> getEntity = restTemplate.exchange("http://localhost:8082/spring-security-oauth-resource/users?page="+currentPage+"&size="+pageSize
+        int pageSize = size.orElse(10);
+        ResponseEntity<PageableUserDto> getEntity = restService.exchange(BASERURI+"/users?page="+currentPage+"&size="+pageSize
                 , HttpMethod.GET
                 , null
                 , PageableUserDto.class);
@@ -54,7 +57,7 @@ public class DashboardController {
         int currentPage = page.orElse(1);
         int pageSize = size.orElse(1);
         if (name==null || name.isEmpty()){
-            ResponseEntity<PageableUserDto> getEntity = restTemplate.exchange("http://localhost:8082/spring-security-oauth-resource/users?page="+currentPage+"&size="+pageSize
+            ResponseEntity<PageableUserDto> getEntity = restService.exchange(BASERURI+"/users?page="+currentPage+"&size="+pageSize
                     , HttpMethod.GET
                     , null
                     , PageableUserDto.class);
@@ -64,7 +67,7 @@ public class DashboardController {
             model.addAttribute("pageNumbers", body.getTotalPages());
             model.addAttribute("pageSize",body.getTotalPages().size());
         }else{
-            ResponseEntity<PageableUserDto> getEntity = restTemplate.exchange("http://localhost:8082/spring-security-oauth-resource/usersByName?name="+name+"&page="+currentPage+"&size="+pageSize
+            ResponseEntity<PageableUserDto> getEntity = restService.exchange(BASERURI+"/usersByName?name="+name+"&page="+currentPage+"&size="+pageSize
                     , HttpMethod.GET
                     , null
                     , PageableUserDto.class);
@@ -92,7 +95,7 @@ public class DashboardController {
 
     @ModelAttribute("AllRoles")
     public List<RoleDto> getAllRoles(){
-        ResponseEntity<List<RoleDto>> rolesList = restTemplate.exchange("http://localhost:8082/spring-security-oauth-resource/roles"
+        ResponseEntity<List<RoleDto>> rolesList = restService.exchange(BASERURI+"/roles"
                 , HttpMethod.GET
                 , null
                 , new ParameterizedTypeReference<List<RoleDto>>() {

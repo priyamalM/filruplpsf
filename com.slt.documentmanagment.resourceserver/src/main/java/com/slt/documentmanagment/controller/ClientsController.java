@@ -1,7 +1,7 @@
 package com.slt.documentmanagment.controller;
 
 import com.slt.documentmanagment.ClientDto;
-import com.slt.documentmanagment.service.ClientsService;
+import com.slt.documentmanagment.service.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +14,7 @@ import java.util.List;
 public class ClientsController {
 
     @Autowired
-    ClientsService clientsService;
+    ClientService clientsService;
 
     @GetMapping("/all")
     public ResponseEntity<List<ClientDto>> findAllClients(){

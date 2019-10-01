@@ -5,12 +5,11 @@ import com.slt.documentmanagment.UserDto;
 import com.slt.documentmanagment.exceptions.EmailSendException;
 import com.slt.documentmanagment.model.User;
 import com.slt.documentmanagment.repository.UserDetailRepository;
-import com.slt.documentmanagment.service.EmailServiceImpl;
+import com.slt.documentmanagment.service.EmailService;
 import com.slt.documentmanagment.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -36,7 +35,7 @@ public class UserController {
     private UserService userService;
 
     @Autowired
-    private EmailServiceImpl emailService;
+    private EmailService emailService;
 
     @PreAuthorize("#oauth2.hasScope('read')")
 //  @RolesAllowed("ROLE_admin")
