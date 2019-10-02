@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface RolesService {
     List<RoleDto> findAllRoles();
-    Role saveRole(RoleDto roleDto);
+    RoleDto saveRole(RoleDto roleDto);
     Role getRoleFromRoleDto(RoleDto roleDto);
     RoleDto getRoleDtoFromRole(Role role);
 }

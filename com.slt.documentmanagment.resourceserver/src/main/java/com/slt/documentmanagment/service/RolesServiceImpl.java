@@ -23,12 +23,13 @@ public class RolesServiceImpl implements RolesService{
         return roleDtos;
     }
 
-    public Role saveRole(RoleDto roleDto){
+    public RoleDto saveRole(RoleDto roleDto){
         Role roleByName = roleRepository.findByName(roleDto.getName());
         if (roleByName==null){
             Role roleFromRoleDto = getRoleFromRoleDto(roleDto);
             Role savedRole = roleRepository.save(roleFromRoleDto);
-            return savedRole;
+            RoleDto roleDtoFromRole = getRoleDtoFromRole(savedRole);
+            return roleDtoFromRole;
         }
         return null;
     }
@@ -53,13 +54,15 @@ public class RolesServiceImpl implements RolesService{
         RoleDto roleDto = new RoleDto();
         roleDto.setId(role.getId());
         roleDto.setName(role.getName());
-        List<PermissionDto> permissionList = role.getPermissions().stream().map(permission -> {
-            PermissionDto permissionDto = new PermissionDto();
-            permissionDto.setId(permission.getId());
-            permissionDto.setName(permission.getName());
-            return permissionDto;
-        }).collect(Collectors.toList());
-        roleDto.setPermissions(permissionList);
+        if (role.getPermissions()!=null) {
+            List<PermissionDto> permissionList = role.getPermissions().stream().map(permission -> {
+                PermissionDto permissionDto = new PermissionDto();
+                permissionDto.setId(permission.getId());
+                permissionDto.setName(permission.getName());
+                return permissionDto;
+            }).collect(Collectors.toList());
+            roleDto.setPermissions(permissionList);
+        }
         return roleDto;
     }
 

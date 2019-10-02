@@ -2,6 +2,7 @@ package com.slt.documentmanagment.controller;
 
 import com.slt.documentmanagment.ClientDto;
 import com.slt.documentmanagment.service.ClientService;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +12,7 @@ import java.util.List;
 
 @RequestMapping("/clients")
 @RestController
+@Api(tags = {"Register Applications In The SSO."})
 public class ClientsController {
 
     @Autowired

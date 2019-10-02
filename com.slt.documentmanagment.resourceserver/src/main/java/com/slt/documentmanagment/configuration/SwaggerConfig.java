@@ -16,6 +16,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 import springfox.documentation.swagger.web.SecurityConfigurationBuilder;
 
 import java.util.Arrays;
+import java.util.Collections;
 
 @Configuration
 @EnableSwagger2
@@ -30,6 +31,7 @@ public class SwaggerConfig {
                 .select().apis(RequestHandlerSelectors.basePackage("com.slt.documentmanagment.controller"))
                 .paths(PathSelectors.any())
                 .build()
+                .apiInfo(apiInfo())
                 .securitySchemes(Arrays.asList(securityScheme()))
                 .securityContexts(Arrays.asList(securityContext()));
     }
@@ -74,6 +76,16 @@ public class SwaggerConfig {
                         Arrays.asList(new SecurityReference("spring_oauth", scopes())))
                 .forPaths(PathSelectors.any())
                 .build();
+    }
+
+    private ApiInfo apiInfo() {
+        return new ApiInfo(
+                "USER MANAGMENT REST Documentation",
+                "custom description of API.",
+                "1.0",
+                "Terms of service",
+                new Contact("SLT DMS TEAM", "www.mobitel.lk", "priyamalm@mobitel.lk"),
+                "License of API", "API license URL", Collections.emptyList());
     }
 
 

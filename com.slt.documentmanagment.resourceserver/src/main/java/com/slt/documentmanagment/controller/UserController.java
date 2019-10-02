@@ -7,6 +7,7 @@ import com.slt.documentmanagment.model.User;
 import com.slt.documentmanagment.repository.UserDetailRepository;
 import com.slt.documentmanagment.service.EmailService;
 import com.slt.documentmanagment.service.UserService;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -26,6 +27,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 @Controller
+@Api(tags = {"Operations To Manage Users."})
 public class UserController {
 
     @Autowired

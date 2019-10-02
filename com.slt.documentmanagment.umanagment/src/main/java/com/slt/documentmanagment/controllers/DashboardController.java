@@ -45,6 +45,7 @@ public class DashboardController extends AbstractController{
         model.addAttribute("paginatedUser",userDtos);
         model.addAttribute("pageNumbers", body.getTotalPages());
         model.addAttribute("pageSize",body.getTotalPages().size());
+        model.addAttribute("psize",10);
         return "search";
     }
 

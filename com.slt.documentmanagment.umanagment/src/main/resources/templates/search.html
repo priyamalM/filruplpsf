@@ -68,7 +68,7 @@
 <!--               <li th class="page-item"><a class="page-link" href="#">2</a></li>-->
                     <li class="page-item" th:if="${pageSize > 0}" th:each="pageNumber : ${pageNumbers}">
                     <a class="page-link"
-                       th:href="@{/search(size=${paginatedUser.size}, page=${pageNumber})}"
+                       th:href="@{/search(size=${psize}, page=${pageNumber})}"
                        th:text=${pageNumber}
                        th:classappend="${pageNumber==paginatedUser.number + 1} ? active">
                     </a>
