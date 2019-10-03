@@ -32,8 +32,8 @@
                         </div>
                         </form>
                     </th>
-                    <th scope="row" colspan="2" class="border-0 pt-0 pr-0 pl-0 pb-2">
-                        <div class="d-flex flex-row-reverse mp-0">
+                    <th  scope="row" colspan="2" class="border-0 pt-0 pr-0 pl-0 pb-2">
+                        <div sec:authorize="hasRole('ROLE_admin')" class="d-flex flex-row-reverse mp-0">
                             <button type="button" class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#exampleModal"><i class="fas fa-user-plus"></i> Add user</button>
                         </div>
                     </th>
@@ -52,7 +52,7 @@
                     <td th:text="${user.email}" />
                     <td>
                         <a th:href="@{/view/{id}(id=${user.id})}" type="button" class="btn btn-secondary btn-sm pb-0 pt-0 mt-0 mb-0"><i class="fas fa-eye"></i> view </a>
-                        <a th:href="@{/edit/{id}(id=${user.id})}"  type="button" class="btn btn-secondary btn-sm pb-0 pt-0 mt-0 mb-0"><i class="fas fa-edit"></i> edit </a>
+                        <a sec:authorize="hasRole('ROLE_admin')" th:href="@{/edit/{id}(id=${user.id})}"  type="button" class="btn btn-secondary btn-sm pb-0 pt-0 mt-0 mb-0"><i class="fas fa-edit"></i> edit </a>
                     </td>
                 </tr>
                 </tbody>
@@ -76,8 +76,6 @@
                 </ul>
             </nav>
         </div>
-        Spring Roles: <span sec:authentication="principal.authorities">NOT FOUND</span>
-        <div sec:authorize="hasRole('ROLE_ADMIN')">has ROLE USER</div>
     </main>
     <!-- Modal -->
     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
