@@ -9,6 +9,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
+import org.thymeleaf.extras.springsecurity5.auth.AuthUtils;
 
 import java.io.IOException;
 
@@ -31,6 +32,8 @@ public class AuthorizationHeaderInterceptor implements ClientHttpRequestIntercep
              accessToken = client.getAccessToken().getTokenValue();
              request.getHeaders().add("Authorization", "Bearer " + accessToken);
         }
+//        Object authenticationProperty = AuthUtils.getAuthenticationProperty(authentication, "principal.attributes['authorities']");
+//        System.out.println(authenticationProperty.toString() +" -----------------");
         return execution.execute(request, bytes);
     }
 }

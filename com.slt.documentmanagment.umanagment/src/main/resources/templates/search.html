@@ -76,6 +76,8 @@
                 </ul>
             </nav>
         </div>
+        Spring Roles: <span sec:authentication="principal.authorities">NOT FOUND</span>
+        <div sec:authorize="hasRole('ROLE_ADMIN')">has ROLE USER</div>
     </main>
     <!-- Modal -->
     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -146,7 +148,6 @@
         </div>
     </div>
 </div>
-
 <th:block th:if="${formErrors}">
     <script th:inline="javascript">
     $(document).ready(function() {

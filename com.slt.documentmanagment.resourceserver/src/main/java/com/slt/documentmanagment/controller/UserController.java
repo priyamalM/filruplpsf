@@ -2,6 +2,7 @@ package com.slt.documentmanagment.controller;
 
 import com.slt.documentmanagment.PageableUserDto;
 import com.slt.documentmanagment.UserDto;
+import static com.slt.documentmanagment.configuration.ApplicationRoles.*;
 import com.slt.documentmanagment.exceptions.EmailSendException;
 import com.slt.documentmanagment.model.User;
 import com.slt.documentmanagment.repository.UserDetailRepository;
@@ -39,8 +40,7 @@ public class UserController {
     @Autowired
     private EmailService emailService;
 
-    @PreAuthorize("#oauth2.hasScope('read')")
-//  @RolesAllowed("ROLE_admin")
+    @PreAuthorize(READSCOPE)
     @RequestMapping(method = RequestMethod.GET, value = "/users/extra")
     @ResponseBody
     public Map<String, Object> getExtraInfo(Authentication auth) {
@@ -50,8 +50,8 @@ public class UserController {
         return details;
     }
 
-    @PreAuthorize("#oauth2.hasScope('read')")
     @ResponseBody
+    @RolesAllowed({USER,ADMIN})
     @RequestMapping(method = RequestMethod.GET,value = "/users")
     public PageableUserDto getUsers(@RequestParam("page") Optional<Integer> page,
                                     @RequestParam("size") Optional<Integer> size){
@@ -80,6 +80,7 @@ public class UserController {
 
     //@PreAuthorize("#oauth2.hasScope('read')")
     @ResponseBody
+    @RolesAllowed({USER,ADMIN})
     @RequestMapping(method = RequestMethod.GET,value = "/usersByName")
     public PageableUserDto getUsersByName(@RequestParam("page") Optional<Integer> page
             ,@RequestParam("size") Optional<Integer> size
@@ -111,7 +112,7 @@ public class UserController {
 
     @PostMapping("/user")
     @ResponseBody
-    @RolesAllowed("ROLE_admin")
+    @RolesAllowed({ADMIN,USER})
     public ResponseEntity<UserDto> saveUser(@RequestBody UserDto userDto){
         UserDto savedUser = null;
         try {
@@ -128,7 +129,7 @@ public class UserController {
 
     @GetMapping("/user/{id}")
     @ResponseBody
-    @RolesAllowed("ROLE_admin")
+    @RolesAllowed({USER,ADMIN})
     public UserDto getUser(@PathVariable("id") int id){
         UserDto user = userService.getUser(id);
         return user;
@@ -136,7 +137,7 @@ public class UserController {
 
     @PostMapping("/user/edit/{id}")
     @ResponseBody
-    @RolesAllowed("ROLE_admin")
+    @RolesAllowed({ADMIN,USER})
     public UserDto saveEditedUser(@PathVariable("id") int id,@RequestBody UserDto userDto){
         UserDto editedUser = userService.editUser(userDto,userDto.isPasswordChanged());
         return editedUser;

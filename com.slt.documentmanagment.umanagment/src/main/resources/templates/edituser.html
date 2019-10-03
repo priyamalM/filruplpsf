@@ -17,7 +17,7 @@
             <form method="post" th:action="@{/edit/user/__${userob.id}__}" th:object="${userob}">
                 <div class="form-group input-group-sm mb-3">
                     <label th:for="userName">User Name</label>
-                    <input disabled th:field="*{userName}" type="text" placeholder="user name" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                    <input readonly th:field="*{userName}" type="text" placeholder="user name" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
                 </div>
                 <div class="form-group-sm mb-3">
                     <label th:for="email">Email</label>
