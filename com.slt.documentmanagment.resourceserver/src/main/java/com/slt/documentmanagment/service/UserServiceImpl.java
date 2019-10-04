@@ -1,11 +1,11 @@
 package com.slt.documentmanagment.service;
 
+import com.slt.documentmanagment.UserDto;
 import com.slt.documentmanagment.exceptions.EmailSendException;
 import com.slt.documentmanagment.model.Role;
+import com.slt.documentmanagment.model.User;
 import com.slt.documentmanagment.repository.RoleRepository;
 import com.slt.documentmanagment.repository.UserDetailRepository;
-import com.slt.documentmanagment.UserDto;
-import com.slt.documentmanagment.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -23,7 +23,9 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private RoleRepository roleRepository;
     @Autowired
-    private EmailServiceImpl emailService;
+    private EmailService emailService;
+    @Autowired
+    private EmailMessageCreator emailMessageCreator;
 
     private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
@@ -31,8 +33,8 @@ public class UserServiceImpl implements UserService {
         if(userDetailRepository.findByUsername(userDto.getUserName()).isPresent()){
             return null;
         }
-        boolean sendSuccess = emailService.sendMessage(userDto.getEmail(), "password : ", userDto.getPassword());
-        if (!sendSuccess){ throw new EmailSendException("Email Sending Failed."); }
+        String verificationMessage = emailMessageCreator.createVerificationMessage(userDto.getUserName(), userDto.getPassword());
+        emailService.sendMessage(userDto.getEmail(), "User Account Created : ",verificationMessage);
         User user = getUserFromUserDto(userDto);
         User savedUser = userDetailRepository.save(user);
         return  getUserDtoFromUser(savedUser);
@@ -40,7 +42,8 @@ public class UserServiceImpl implements UserService {
 
     public UserDto editUser(UserDto userDto,boolean passwordChanged){
         if (passwordChanged){
-            emailService.sendMessage(userDto.getEmail(),"password Changed : ",userDto.getPassword());
+            String message = emailMessageCreator.createPasswordChangedMessage(userDto.getUserName(), userDto.getPassword());
+            emailService.sendMessage(userDto.getEmail(),"password Changed : ",message);
         }else{
             Optional<User> byId = userDetailRepository.findById(userDto.getId());
             if (byId.isPresent()){

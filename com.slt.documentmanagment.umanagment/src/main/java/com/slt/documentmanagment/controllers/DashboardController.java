@@ -56,7 +56,7 @@ public class DashboardController extends AbstractController{
             ,@RequestParam("page") Optional<Integer> page
             ,@RequestParam("size") Optional<Integer> size){
         int currentPage = page.orElse(1);
-        int pageSize = size.orElse(1);
+        int pageSize = size.orElse(10);
         if (name==null || name.isEmpty()){
             ResponseEntity<PageableUserDto> getEntity = restService.exchange(BASERURI+"/users?page="+currentPage+"&size="+pageSize
                     , HttpMethod.GET
@@ -83,6 +83,7 @@ public class DashboardController extends AbstractController{
             model.addAttribute("paginatedUser",userDtos);
             model.addAttribute("pageNumbers", body.getTotalPages());
             model.addAttribute("pageSize",totalPageSize);
+            model.addAttribute("psize",10);
         }
         return "search";
     }

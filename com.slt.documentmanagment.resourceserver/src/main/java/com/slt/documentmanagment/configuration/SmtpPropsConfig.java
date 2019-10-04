@@ -16,5 +16,7 @@ public class SmtpPropsConfig {
     private String debug;
     private String user;
     private String password;
+    private String from;
+    private int emailWorkers;
 
 }

@@ -32,8 +32,6 @@ public class AuthorizationHeaderInterceptor implements ClientHttpRequestIntercep
              accessToken = client.getAccessToken().getTokenValue();
              request.getHeaders().add("Authorization", "Bearer " + accessToken);
         }
-//        Object authenticationProperty = AuthUtils.getAuthenticationProperty(authentication, "principal.attributes['authorities']");
-//        System.out.println(authenticationProperty.toString() +" -----------------");
         return execution.execute(request, bytes);
     }
 }
